@@ -423,6 +423,7 @@ export default function Home() {
         {/* Footer */}
         <footer className="mt-16 pt-8 border-t border-border text-center text-sm text-muted-foreground">
           <p>© 2026 Kishotenketsu: A Arte da Narrativa sem Conflito. Todos os direitos reservados.</p>
+          <p className="mt-4">Desenvolvimento: <span className="font-semibold text-foreground">Rodisley Comunicação Visual</span></p>
         </footer>
       </main>
     </div>
