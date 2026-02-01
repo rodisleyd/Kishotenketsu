@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ChevronDown, Download, BookOpen, Lightbulb, Zap, CheckCircle2 } from "lucide-react";
+import StoryCreator from "@/components/StoryCreator";
 
 export default function Home() {
   const [expandedSection, setExpandedSection] = useState<string | null>("introducao");
+  const [showStoryCreator, setShowStoryCreator] = useState(false);
 
   const toggleSection = (section: string) => {
     setExpandedSection(expandedSection === section ? null : section);
@@ -55,6 +57,12 @@ export default function Home() {
             label="Exercícios"
             active={expandedSection === "exercicios"}
             onClick={() => toggleSection("exercicios")}
+          />
+          <NavLink 
+            href="#criador" 
+            label="Criador de Histórias"
+            active={showStoryCreator}
+            onClick={() => setShowStoryCreator(!showStoryCreator)}
           />
         </nav>
 
@@ -364,6 +372,17 @@ export default function Home() {
             />
           </div>
         </Section>
+
+        {/* Story Creator Section */}
+        {showStoryCreator && (
+          <section id="criador" className="mt-12 pt-8 border-t border-border">
+            <h2 className="text-3xl font-bold text-foreground mb-2">Criador de Histórias Kishotenketsu</h2>
+            <p className="text-foreground text-muted-foreground mb-8">
+              Use nossa ferramenta interativa para criar sua própria história seguindo a estrutura Kishotenketsu. Preencha os quatro atos e veja sua história ganhar vida em tempo real.
+            </p>
+            <StoryCreator />
+          </section>
+        )}
 
         {/* CTA Section */}
         <section className="mt-16 pt-12 border-t border-border">
