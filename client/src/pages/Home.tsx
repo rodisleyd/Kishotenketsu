@@ -26,7 +26,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white border-b border-border">
+      <header className="sticky top-0 z-40 bg-white border-b border-border">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Kishotenketsu</h1>
@@ -370,16 +370,29 @@ export default function Home() {
           </div>
         </Section>
 
-        {/* Story Creator Section */}
-        {showStoryCreator && (
-          <section id="criador" className="mt-12 pt-8 border-t border-border">
-            <h2 className="text-3xl font-bold text-foreground mb-2">Criador de Histórias Kishotenketsu</h2>
-            <p className="text-foreground text-muted-foreground mb-8">
-              Use nossa ferramenta interativa para criar sua própria história seguindo a estrutura Kishotenketsu. Preencha os quatro atos e veja sua história ganhar vida em tempo real.
-            </p>
-            <StoryCreator />
-          </section>
-        )}
+      {/* Story Creator Modal */}
+      {showStoryCreator && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4 overflow-y-auto">
+          <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full my-8">
+            <div className="sticky top-0 bg-white border-b border-border p-6 flex items-center justify-between rounded-t-lg">
+              <h2 className="text-3xl font-bold text-foreground">Criador de Histórias</h2>
+              <button
+                onClick={() => setShowStoryCreator(false)}
+                className="p-2 hover:bg-secondary rounded-lg transition-colors flex-shrink-0"
+                aria-label="Fechar modal"
+              >
+                <X size={24} className="text-foreground" />
+              </button>
+            </div>
+            <div className="p-6 max-h-[calc(90vh-120px)] overflow-y-auto">
+              <p className="text-foreground text-muted-foreground mb-8">
+                Use nossa ferramenta interativa para criar sua própria história seguindo a estrutura Kishotenketsu. Preencha os quatro atos e veja sua história ganhar vida em tempo real.
+              </p>
+              <StoryCreator />
+            </div>
+          </div>
+        </div>
+      )}
 
         {/* CTA Section */}
         <section className="mt-16 pt-12 border-t border-border">
