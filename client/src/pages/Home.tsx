@@ -1,107 +1,104 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ChevronDown, Download, BookOpen, Lightbulb, Zap, CheckCircle2 } from "lucide-react";
+import { ChevronDown, Download, Lightbulb, Zap, CheckCircle2, Menu, X } from "lucide-react";
 import StoryCreator from "@/components/StoryCreator";
 
 export default function Home() {
   const [expandedSection, setExpandedSection] = useState<string | null>("introducao");
   const [showStoryCreator, setShowStoryCreator] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const toggleSection = (section: string) => {
     setExpandedSection(expandedSection === section ? null : section);
   };
 
+  const navItems = [
+    { id: "introducao", label: "Introdução" },
+    { id: "quatro-atos", label: "Os Quatro Atos" },
+    { id: "diferenca-ocidental", label: "vs Estrutura Ocidental" },
+    { id: "exemplos", label: "Exemplos Práticos" },
+    { id: "aplicacoes", label: "Aplicações Modernas" },
+    { id: "exercicios", label: "Exercícios" },
+    { id: "criador", label: "Criador de Histórias" },
+  ];
+
   return (
-    <div className="min-h-screen bg-white flex">
-      {/* Sidebar Navigation */}
-      <aside className="w-64 bg-white border-r border-border p-8 sticky top-0 h-screen overflow-y-auto">
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-foreground mb-2">Kishotenketsu</h2>
-          <p className="text-sm text-muted-foreground">A Arte da Narrativa sem Conflito</p>
-        </div>
-
-        <nav className="space-y-2">
-          <NavLink 
-            href="#introducao" 
-            label="Introdução"
-            active={expandedSection === "introducao"}
-            onClick={() => toggleSection("introducao")}
-          />
-          <NavLink 
-            href="#quatro-atos" 
-            label="Os Quatro Atos"
-            active={expandedSection === "quatro-atos"}
-            onClick={() => toggleSection("quatro-atos")}
-          />
-          <NavLink 
-            href="#diferenca-ocidental" 
-            label="vs Estrutura Ocidental"
-            active={expandedSection === "diferenca-ocidental"}
-            onClick={() => toggleSection("diferenca-ocidental")}
-          />
-          <NavLink 
-            href="#exemplos" 
-            label="Exemplos Práticos"
-            active={expandedSection === "exemplos"}
-            onClick={() => toggleSection("exemplos")}
-          />
-          <NavLink 
-            href="#aplicacoes" 
-            label="Aplicações Modernas"
-            active={expandedSection === "aplicacoes"}
-            onClick={() => toggleSection("aplicacoes")}
-          />
-          <NavLink 
-            href="#exercicios" 
-            label="Exercícios"
-            active={expandedSection === "exercicios"}
-            onClick={() => toggleSection("exercicios")}
-          />
-          <NavLink 
-            href="#criador" 
-            label="Criador de Histórias"
-            active={showStoryCreator}
-            onClick={() => setShowStoryCreator(!showStoryCreator)}
-          />
-        </nav>
-
-        <div className="mt-12 pt-8 border-t border-border">
-          <h3 className="text-sm font-semibold text-foreground mb-4">Recursos</h3>
-          <div className="space-y-3">
-            <a 
-              href="/Kishotenketsu_Aula_Completa.pdf" 
-              download
-              className="flex items-center gap-2 text-sm text-sho-color hover:text-primary transition-colors"
-            >
-              <Download size={16} />
-              <span>Aula Completa (PDF)</span>
-            </a>
-            <a 
-              href="/Kishotenketsu_Exemplos_Analises.pdf" 
-              download
-              className="flex items-center gap-2 text-sm text-sho-color hover:text-primary transition-colors"
-            >
-              <Download size={16} />
-              <span>Exemplos & Análises (PDF)</span>
-            </a>
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <header className="sticky top-0 z-50 bg-white border-b border-border">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-foreground">Kishotenketsu</h1>
+            <p className="text-xs text-muted-foreground">A Arte da Narrativa sem Conflito</p>
           </div>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex gap-1">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => {
+                  if (item.id === "criador") {
+                    setShowStoryCreator(!showStoryCreator);
+                  } else {
+                    toggleSection(item.id);
+                  }
+                }}
+                className="px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary rounded-lg transition-colors"
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 hover:bg-secondary rounded-lg"
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
-      </aside>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t border-border bg-secondary">
+            <nav className="flex flex-col p-4 gap-2">
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    if (item.id === "criador") {
+                      setShowStoryCreator(!showStoryCreator);
+                    } else {
+                      toggleSection(item.id);
+                    }
+                    setMobileMenuOpen(false);
+                  }}
+                  className="px-3 py-2 text-sm font-medium text-foreground hover:bg-border rounded-lg transition-colors text-left"
+                >
+                  {item.label}
+                </button>
+              ))}
+            </nav>
+          </div>
+        )}
+      </header>
 
       {/* Main Content */}
-      <main className="flex-1 p-12 max-w-4xl">
+      <main className="max-w-4xl mx-auto px-4 py-12">
         {/* Hero Section */}
-        <section className="mb-16">
-          <img 
-            src="/images/hero-banner.png" 
-            alt="Kishotenketsu - A Arte da Narrativa" 
-            className="w-full rounded-lg shadow-lg mb-8 object-cover h-96"
+        <section className="mb-16 text-center">
+          <img
+            src="/images/hero-banner.png"
+            alt="Kishotenketsu - A Arte da Narrativa"
+            className="w-full rounded-lg shadow-lg mb-8 object-cover h-80"
           />
-          <h1 className="text-5xl font-bold text-foreground mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
             Kishotenketsu
-          </h1>
-          <p className="text-xl text-muted-foreground mb-6">
+          </h2>
+          <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
             Descubra a estrutura narrativa oriental que revoluciona a forma como contamos histórias. Diferentemente das estruturas ocidentais baseadas em conflito, o Kishotenketsu oferece uma abordagem alternativa focada em harmonia, surpresa e conexão.
           </p>
         </section>
@@ -120,17 +117,17 @@ export default function Home() {
             A palavra "Kishotenketsu" é composta por quatro caracteres chineses, cada um representando uma fase distinta da narrativa. Essa estrutura tem sido utilizada há séculos em obras clássicas asiáticas e continua sendo amplamente empregada em mangás, animes, filmes e literatura contemporânea.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-            <BenefitCard 
+            <BenefitCard
               icon={<Lightbulb className="text-ki-color" size={24} />}
               title="Diversidade Criativa"
               description="Expande seu repertório de técnicas de contação de histórias"
             />
-            <BenefitCard 
+            <BenefitCard
               icon={<Zap className="text-sho-color" size={24} />}
               title="Narrativas Sutis"
               description="Crie histórias através de nuances e revelação"
             />
-            <BenefitCard 
+            <BenefitCard
               icon={<CheckCircle2 className="text-ketsu-color" size={24} />}
               title="Aplicação Universal"
               description="Use em literatura, cinema, quadrinhos e jogos"
@@ -145,9 +142,9 @@ export default function Home() {
           expanded={expandedSection === "quatro-atos"}
           onToggle={() => toggleSection("quatro-atos")}
         >
-          <img 
-            src="/images/kishotenketsu-diagram.png" 
-            alt="Diagrama dos Quatro Atos" 
+          <img
+            src="/images/kishotenketsu-diagram.png"
+            alt="Diagrama dos Quatro Atos"
             className="w-full rounded-lg shadow-md mb-8"
           />
 
@@ -209,9 +206,9 @@ export default function Home() {
           expanded={expandedSection === "diferenca-ocidental"}
           onToggle={() => toggleSection("diferenca-ocidental")}
         >
-          <img 
-            src="/images/comparison-chart.png" 
-            alt="Comparação com Estrutura Ocidental" 
+          <img
+            src="/images/comparison-chart.png"
+            alt="Comparação com Estrutura Ocidental"
             className="w-full rounded-lg shadow-md mb-8"
           />
           <p className="text-foreground mb-6">
@@ -259,9 +256,9 @@ export default function Home() {
           expanded={expandedSection === "exemplos"}
           onToggle={() => toggleSection("exemplos")}
         >
-          <img 
-            src="/images/manga-example.png" 
-            alt="Exemplo de Yonkoma" 
+          <img
+            src="/images/manga-example.png"
+            alt="Exemplo de Yonkoma"
             className="w-full rounded-lg shadow-md mb-8"
           />
 
@@ -391,16 +388,16 @@ export default function Home() {
             Baixe nossos PDFs educativos completos com análises detalhadas, exemplos práticos e exercícios para dominar a estrutura Kishotenketsu.
           </p>
           <div className="flex gap-4 flex-wrap">
-            <a 
-              href="/Kishotenketsu_Aula_Completa.pdf" 
+            <a
+              href="/Kishotenketsu_Aula_Completa.pdf"
               download
               className="inline-flex items-center gap-2 px-6 py-3 bg-ki-color text-white rounded-lg hover:opacity-90 transition-opacity font-semibold"
             >
               <Download size={20} />
               Aula Completa (PDF)
             </a>
-            <a 
-              href="/Kishotenketsu_Exemplos_Analises.pdf" 
+            <a
+              href="/Kishotenketsu_Exemplos_Analises.pdf"
               download
               className="inline-flex items-center gap-2 px-6 py-3 bg-sho-color text-white rounded-lg hover:opacity-90 transition-opacity font-semibold"
             >
@@ -409,27 +406,17 @@ export default function Home() {
             </a>
           </div>
         </section>
+
+        {/* Footer */}
+        <footer className="mt-16 pt-8 border-t border-border text-center text-sm text-muted-foreground">
+          <p>© 2026 Kishotenketsu: A Arte da Narrativa sem Conflito. Todos os direitos reservados.</p>
+        </footer>
       </main>
     </div>
   );
 }
 
 /* Components */
-
-function NavLink({ href, label, active, onClick }: { href: string; label: string; active: boolean; onClick: () => void }) {
-  return (
-    <button
-      onClick={onClick}
-      className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
-        active 
-          ? "bg-ki-color text-white" 
-          : "text-foreground hover:bg-secondary"
-      }`}
-    >
-      {label}
-    </button>
-  );
-}
 
 function Section({ id, title, expanded, onToggle, children }: { id: string; title: string; expanded: boolean; onToggle: () => void; children: React.ReactNode }) {
   return (
@@ -439,8 +426,8 @@ function Section({ id, title, expanded, onToggle, children }: { id: string; titl
         className="w-full flex items-center justify-between p-4 bg-secondary rounded-lg hover:bg-border transition-colors mb-4"
       >
         <h2 className="text-2xl font-bold text-foreground">{title}</h2>
-        <ChevronDown 
-          size={24} 
+        <ChevronDown
+          size={24}
           className={`text-foreground transition-transform ${expanded ? "rotate-180" : ""}`}
         />
       </button>
@@ -466,11 +453,6 @@ function BenefitCard({ icon, title, description }: { icon: React.ReactNode; titl
 function ActCard({ color, title, description, details }: { color: string; title: string; description: string; details: string[] }) {
   return (
     <Card className="border-l-4 border-l-[var(--ki-color)] p-6">
-      <style>{`
-        .act-card-${color} {
-          border-left-color: var(--${color});
-        }
-      `}</style>
       <h3 className="text-xl font-bold text-foreground mb-2">{title}</h3>
       <p className="text-foreground mb-4">{description}</p>
       <ul className="space-y-2">
