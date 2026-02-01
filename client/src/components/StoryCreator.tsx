@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Download, Copy, RotateCcw, Eye, EyeOff, Lightbulb } from "lucide-react";
+import { Download, Copy, RotateCcw, Eye, EyeOff, Lightbulb, FileText } from "lucide-react";
 import StoryExamples, { type StoryExample } from "./StoryExamples";
+import { generateStoryPDF } from "@/lib/pdfGenerator";
 
 interface Story {
   title: string;
@@ -49,7 +50,7 @@ export default function StoryCreator() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleDownload = () => {
+  const handleDownloadTxt = () => {
     const storyText = formatStoryText();
     const element = document.createElement("a");
     const file = new Blob([storyText], { type: "text/plain;charset=utf-8" });
@@ -58,6 +59,10 @@ export default function StoryCreator() {
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
+  };
+
+  const handleDownloadPDF = () => {
+    generateStoryPDF(story);
   };
 
   const handleLoadExample = (example: StoryExample) => {
@@ -186,13 +191,25 @@ ${story.ketsu || "[Preencha a conclusão]"}`;
                 <Copy size={16} />
                 {copied ? "Copiado!" : "Copiar"}
               </Button>
+            </div>
+
+            <div className="flex gap-2">
               <Button
-                onClick={handleDownload}
-                className="flex-1 bg-ki-color text-white hover:opacity-90 flex items-center justify-center gap-2"
+                onClick={handleDownloadTxt}
+                variant="outline"
+                className="flex-1 flex items-center justify-center gap-2 text-sho-color"
                 disabled={!isComplete}
               >
                 <Download size={16} />
-                Baixar
+                TXT
+              </Button>
+              <Button
+                onClick={handleDownloadPDF}
+                className="flex-1 bg-ki-color text-white hover:opacity-90 flex items-center justify-center gap-2"
+                disabled={!isComplete}
+              >
+                <FileText size={16} />
+                PDF
               </Button>
             </div>
             
